@@ -69,6 +69,16 @@ export default function Home() {
           <button style={styles.popupButton} onClick={handleClosePopup}>
             shake me more!
           </button>
+          
+          {/* Link after pop-up */}
+          <a
+            href="https://siemsee.com" // Replace this with your desired link
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.link}
+          >
+            Go to Example Site
+          </a>
         </div>
       )}
     </div>
@@ -134,6 +144,14 @@ const styles = {
     cursor: "pointer",
     fontWeight: "bold",
     fontSize: "1rem", // Make the button text size responsive
+  },
+  link: {
+    display: "block",
+    marginTop: "20px",
+    color: "#007bff",
+    textDecoration: "none",
+    fontSize: "1.2rem",
+    fontWeight: "bold",
   },
 };
 
