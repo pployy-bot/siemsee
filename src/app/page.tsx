@@ -1,11 +1,11 @@
 "use client"; // Add this at the top to indicate client-side code
 
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Home() {
   const [shake, setShake] = useState(false);
-  const [isPopupVisible, setIsPopupVisible] = useState(false); // State to manage pop-up visibility
-  const [popupText, setPopupText] = useState(""); // State for random pop-up text
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [popupText, setPopupText] = useState("");
 
   const messages = [
     "#1 The future belongs to those who believe in the beauty of their dreams.",
@@ -37,14 +37,30 @@ export default function Home() {
       setShake(false);
       // Pick a random message from the list
       const randomIndex = Math.floor(Math.random() * messages.length);
-      setPopupText(messages[randomIndex]); // Set the random message for the pop-up
-      setIsPopupVisible(true); // Show the pop-up after shaking
+      setPopupText(messages[randomIndex]);
+      setIsPopupVisible(true);
     }, 1800); // 1800ms for 3 loops (0.6s * 3)
   };
 
   const handleClosePopup = () => {
     setIsPopupVisible(false); // Close the pop-up
   };
+
+  useEffect(() => {
+    // Inject the shake animation style dynamically
+    const style = `
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-20px); }
+      50% { transform: translateX(0); }
+      75% { transform: translateX(20px); }
+      100% { transform: translateX(0); }
+    }
+    `;
+    const styleTag = document.createElement("style");
+    styleTag.innerHTML = style;
+    document.head.appendChild(styleTag);
+  }, []);
 
   return (
     <div style={styles.container}>
@@ -56,29 +72,17 @@ export default function Home() {
         alt="SIEM SEE"
         style={{
           ...styles.image,
-          animation: shake ? "shake 0.6s ease-in-out 3" : "none", // 0.6s duration, loop 3 times
+          animation: shake ? "shake 0.6s ease-in-out 3" : "none",
         }}
         onClick={handleClick} // Trigger shake on click
       />
 
-      {/* Pop-up after shake */}
       {isPopupVisible && (
         <div style={styles.popup}>
-          <h2 style={styles.popupText}>{popupText}</h2>{" "}
-          {/* Display the random message */}
+          <h2 style={styles.popupText}>{popupText}</h2>
           <button style={styles.popupButton} onClick={handleClosePopup}>
             shake me more!
           </button>
-          
-          {/* Link after pop-up */}
-          <a
-            href="https://siemsee.com" // Replace this with your desired link
-            target="_blank"
-            rel="noopener noreferrer"
-            style={styles.link}
-          >
-            Go to Example Site
-          </a>
         </div>
       )}
     </div>
@@ -90,32 +94,32 @@ const styles = {
     backgroundColor: "white",
     height: "100vh",
     display: "flex",
-    flexDirection: "column", // Ensures elements stack vertically
-    justifyContent: "flex-start", // Keeps content aligned to the top
-    alignItems: "center", // Centers horizontally
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
     fontFamily: "Arial, sans-serif",
-    padding: "0 15px", // Add padding to ensure content doesn't touch the sides on mobile
-    boxSizing: "border-box", // Ensure padding is considered in the layout
+    padding: "0 15px",
+    boxSizing: "border-box",
     overflow: "hidden", // Prevent scrolling
   },
   textContainer: {
     width: "100%",
-    textAlign: "center", // Aligns text in the center horizontally
-    marginTop: "20px", // Default margin top for normal screen sizes
+    textAlign: "center",
+    marginTop: "20px",
   },
   heading: {
-    fontSize: "3rem", // Increase font size for better visibility
+    fontSize: "3rem",
     fontWeight: "bold",
     color: "#333",
-    letterSpacing: "1px", // Adding space between letters
+    letterSpacing: "1px",
   },
   image: {
-    marginTop: "10px", // Reduced margin-top to bring image closer to the text
-    width: "auto", // Keep the image's aspect ratio
-    height: "100vh", // Make sure the image height fills the screen
-    maxWidth: "100%", // Ensure image doesn't exceed the screen width
-    objectFit: "contain", // Ensures the image scales while maintaining its aspect ratio
-    cursor: "pointer", // Changes cursor to pointer on hover
+    marginTop: "10px",
+    width: "auto",
+    height: "100vh",
+    maxWidth: "100%",
+    objectFit: "contain",
+    cursor: "pointer",
   },
   popup: {
     position: "fixed",
@@ -128,11 +132,11 @@ const styles = {
     boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.3)",
     textAlign: "center",
     zIndex: 1000,
-    width: "80%", // Ensure the popup fits smaller screens
-    maxWidth: "500px", // Prevent it from becoming too large on larger screens
+    width: "80%",
+    maxWidth: "500px",
   },
   popupText: {
-    fontSize: "1.5rem", // Slightly smaller for better readability on smaller devices
+    fontSize: "1.5rem",
     color: "#333",
     marginBottom: "10px",
   },
@@ -143,51 +147,6 @@ const styles = {
     borderRadius: "5px",
     cursor: "pointer",
     fontWeight: "bold",
-    fontSize: "1rem", // Make the button text size responsive
-  },
-  link: {
-    display: "block",
-    marginTop: "20px",
-    color: "#007bff",
-    textDecoration: "none",
-    fontSize: "1.2rem",
-    fontWeight: "bold",
+    fontSize: "1rem",
   },
 };
-
-// Injecting CSS for shake animation into the global document.
-const style = `
-@keyframes shake {
-  0% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-20px);  // Adjusted shake distance for faster effect
-  }
-  50% {
-    transform: translateX(0);
-  }
-  75% {
-    transform: translateX(20px);  // Adjusted shake distance for faster effect
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-`;
-
-// Apply the keyframe animation globally
-if (typeof window !== "undefined") {
-  const styleTag = document.createElement("style");
-  styleTag.innerHTML = style;
-  document.head.appendChild(styleTag);
-}
-
-// Responsive adjustments
-if (typeof window !== "undefined") {
-  const mediaQuery = window.matchMedia("(max-width: 768px)");
-
-  if (mediaQuery.matches) {
-    styles.textContainer.marginTop = "40px"; // Increase margin-top for smaller screens
-  }
-}
