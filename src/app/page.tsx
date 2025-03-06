@@ -32,22 +32,22 @@ export default function Home() {
 
   const handleClick = () => {
     setShake(true);
-    // Reset the shake animation and show the pop-up after it finishes (1.8s for 3 loops)
+    
     setTimeout(() => {
       setShake(false);
-      // Pick a random message from the list
+ 
       const randomIndex = Math.floor(Math.random() * messages.length);
       setPopupText(messages[randomIndex]);
       setIsPopupVisible(true);
-    }, 1800); // 1800ms for 3 loops (0.6s * 3)
+    }, 1800); 
   };
 
   const handleClosePopup = () => {
-    setIsPopupVisible(false); // Close the pop-up
+    setIsPopupVisible(false); 
   };
 
   useEffect(() => {
-    // Inject the shake animation style dynamically
+  
     const style = `
     @keyframes shake {
       0% { transform: translateX(0); }
@@ -68,13 +68,13 @@ export default function Home() {
         <h1 style={styles.heading}>WELCOME TO SIEM SEE</h1>
       </div>
       <img
-        src="/images/image copy.png" // Correct image path
+        src="/images/image copy.png" 
         alt="SIEM SEE"
         style={{
           ...styles.image,
           animation: shake ? "shake 0.6s ease-in-out 3" : "none",
         }}
-        onClick={handleClick} // Trigger shake on click
+        onClick={handleClick} 
       />
 
       {isPopupVisible && (
@@ -100,7 +100,7 @@ const styles = {
     fontFamily: "Arial, sans-serif",
     padding: "0 15px",
     boxSizing: "border-box",
-    overflow: "hidden", // Prevent scrolling
+    overflow: "hidden", 
   },
   textContainer: {
     width: "100%",
